@@ -1,0 +1,68 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <title>uNexus OS — Open Source. Linux Powered. Gamer Focused.</title>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#000000"/>
+
+  <!-- Grid lines -->
+  <line x1="0" y1="210" x2="1200" y2="210" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <line x1="0" y1="420" x2="1200" y2="420" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <line x1="400" y1="0" x2="400" y2="630" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <line x1="800" y1="0" x2="800" y2="630" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+  <!-- Radial glow -->
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Eyebrow pill -->
+  <rect x="80" y="72" width="260" height="32" rx="16" fill="rgba(255,255,255,0.07)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <circle cx="104" cy="88" r="5" fill="#ffffff" opacity="0.9"/>
+  <text x="120" y="93" font-family="'Exo 2', system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.6)" letter-spacing="2">OPEN SOURCE · IN DEV</text>
+
+  <!-- Title -->
+  <text x="80" y="230" font-family="'Exo 2', system-ui, sans-serif" font-size="148" font-weight="900" fill="#ffffff" letter-spacing="-6">uNexus</text>
+  <text x="80" y="360" font-family="'Exo 2', system-ui, sans-serif" font-size="148" font-weight="900" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="2" letter-spacing="-6">OS</text>
+
+  <!-- Divider + tagline -->
+  <line x1="80" y1="400" x2="80" y2="490" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+  <text x="104" y="434" font-family="'Exo 2', system-ui, sans-serif" font-size="20" font-weight="300" fill="rgba(255,255,255,0.55)" letter-spacing="0.5">A gaming-first Linux shell built around</text>
+  <text x="104" y="462" font-family="'Exo 2', system-ui, sans-serif" font-size="20" font-weight="300" fill="rgba(255,255,255,0.55)" letter-spacing="0.5">speed, focus, and a polished experience.</text>
+
+  <!-- Tech stack pills -->
+  <rect x="760" y="180" width="130" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="825" y="203" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">ARCH LINUX</text>
+
+  <rect x="910" y="180" width="120" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="970" y="203" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">HYPRLAND</text>
+
+  <rect x="760" y="232" width="100" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="810" y="255" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">Qt6 / QML</text>
+
+  <rect x="876" y="232" width="80" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="916" y="255" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">C++</text>
+
+  <rect x="972" y="232" width="100" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="1022" y="255" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">WAYLAND</text>
+
+  <rect x="760" y="284" width="100" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="810" y="307" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">GPL-3.0</text>
+
+  <rect x="876" y="284" width="90" height="36" rx="8" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>
+  <text x="921" y="307" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.5)" text-anchor="middle" letter-spacing="1">VULKAN</text>
+
+  <!-- Decorative circles top-right -->
+  <circle cx="1150" cy="80" r="140" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <circle cx="1150" cy="80" r="100" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  <circle cx="1150" cy="80" r="60" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="570" width="1200" height="60" fill="rgba(255,255,255,0.03)"/>
+  <line x1="0" y1="570" x2="1200" y2="570" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+  <text x="80" y="606" font-family="system-ui, sans-serif" font-size="14" fill="rgba(255,255,255,0.3)" letter-spacing="0.5">github.com/PedroVitor-Dev/uNexus-OS</text>
+  <text x="1120" y="606" font-family="system-ui, sans-serif" font-size="14" fill="rgba(255,255,255,0.3)" text-anchor="end" letter-spacing="0.5">unexus-os.vercel.app</text>
+</svg>
