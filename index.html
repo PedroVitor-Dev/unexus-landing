@@ -85,15 +85,8 @@
 
 html{ scroll-behavior:auto }
 
-/* ─── CURSOR ─── */
-@media(pointer:fine){
-  *{cursor:none!important}
-  #cur-dot,#cur-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:99999;will-change:transform}
-  #cur-dot{width:5px;height:5px;border-radius:50%;background:#fff;margin:-2.5px 0 0 -2.5px;transition:transform .1s,opacity .2s}
-  #cur-ring{width:32px;height:32px;border-radius:50%;border:1px solid var(--border-mid);margin:-16px 0 0 -16px;transition:width .2s,height .2s,border-color .2s,opacity .2s}
-  body.cur-hover #cur-ring{width:48px;height:48px;border-color:#fff;margin:-24px 0 0 -24px}
-  body.cur-click #cur-dot{transform:scale(3)}
-}
+/* ─── NATIVE CURSOR: faster and avoids hover visibility issues ─── */
+#cur-dot,#cur-ring{display:none!important}
 
 body{
   background:var(--bg);color:var(--text);
@@ -114,7 +107,7 @@ body{
   position:fixed;right:clamp(.75rem,2vw,1.25rem);bottom:clamp(.75rem,2vw,1.25rem);transform:none;
   z-index:200;display:flex;flex-direction:column;align-items:center;gap:.55rem;
   padding:.7rem .55rem;border:1px solid var(--border);border-radius:999px;
-  background:rgba(0,0,0,.28);backdrop-filter:blur(14px);
+  background:rgba(0,0,0,.72);
   opacity:.72;transition:opacity .2s,transform .2s;
 }
 #chapter-counter:hover{opacity:1;transform:translateY(-2px)}
@@ -134,7 +127,7 @@ nav{
   background:rgba(0,0,0,0);
   transition:background .4s;
 }
-nav.scrolled{background:rgba(0,0,0,.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+nav.scrolled{background:rgba(0,0,0,.88);border-bottom:1px solid var(--border)}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--mono);font-size:.75rem;color:var(--text-muted);letter-spacing:.1em}
 .nav-logo-img{width:28px;height:28px;object-fit:contain;display:block;filter:drop-shadow(0 0 14px var(--brand-light))}
 .nav-logo-mark{font-weight:700;color:#fff}
@@ -395,6 +388,42 @@ footer{
 .footer-links a{font-family:var(--mono);font-size:.625rem;color:var(--text-dim);text-decoration:none;letter-spacing:.06em;transition:color .2s}
 .footer-links a:hover{color:#fff}
 
+
+
+/* ─── READABILITY FIXES ───
+   Keeps the identity monochrome: #1E1E1E + #F3F3F3.
+   No headline text is semi-transparent anymore. */
+.story-heading,
+.story-heading .dim,
+.arch-statement,
+.arch-statement .highlight,
+.epilogue-title,
+.epilogue-title .dim,
+.prologue-title,
+.prologue-title .t1,
+.prologue-title .t2{
+  color:var(--brand-light)!important;
+  opacity:1!important;
+}
+.story-heading .stroke,
+.prologue-title .t2{
+  -webkit-text-stroke:0!important;
+  color:var(--brand-light)!important;
+}
+.hero-logo{
+  filter:none!important;
+  pointer-events:none;
+}
+.prologue-title,
+.story-heading,
+.arch-statement,
+.epilogue-title{
+  pointer-events:none;
+}
+.nav-logo-img{
+  filter:none!important;
+}
+
 /* ─── GSAP INIT ─── */
 .gs-fade{opacity:0;transform:translateY(40px)}
 .gs-left{opacity:0;transform:translateX(-50px)}
@@ -404,7 +433,25 @@ footer{
 /* ─── RESPONSIVE ─── */
 @media(max-width:900px){
   .origin-grid{grid-template-columns:1fr;gap:3rem}
-  .origin-visual{order:-1;height:220px}
+  .origin-visual{
+    order:-1;
+    height:auto;
+    min-height:260px;
+    padding:1.1rem;
+    align-items:flex-start;
+    justify-content:flex-start;
+  }
+  .terminal{
+    width:100%;
+    font-size:.66rem;
+    line-height:1.7;
+  }
+  .terminal-line{
+    white-space:normal;
+    overflow:visible;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+  }
   .feat-grid{grid-template-columns:1fr}
   .road-item{grid-template-columns:1fr auto;gap:1rem}
   .road-num{display:none}
@@ -415,6 +462,24 @@ footer{
   .nav-hamburger{display:flex}
   .arch-stack{grid-template-columns:1fr 1fr}
   .road-badge{display:none}
+  .origin-visual{
+    min-height:280px;
+    padding:1rem .95rem;
+  }
+  .terminal{
+    font-size:.62rem;
+    line-height:1.65;
+  }
+}
+@media(max-width:420px){
+  .origin-visual{
+    min-height:300px;
+    padding:.9rem .85rem;
+  }
+  .terminal{
+    font-size:.58rem;
+    line-height:1.6;
+  }
 }
 @media(prefers-reduced-motion:reduce){
   *{animation-duration:.01ms!important;transition-duration:.01ms!important}
@@ -891,76 +956,52 @@ if(typeof Lenis==='undefined'){
 /* ════════════════════════════
    LENIS
 ════════════════════════════ */
-const lenis=new Lenis({duration:1.3,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true,wheelMultiplier:.85});
-function rafLoop(t){lenis.raf(t);requestAnimationFrame(rafLoop);}
-requestAnimationFrame(rafLoop);
+const lenis=new Lenis({duration:.75,easing:t=>1-Math.pow(1-t,3),smoothWheel:true,wheelMultiplier:1});
 lenis.on('scroll',ScrollTrigger.update);
 gsap.ticker.add(t=>lenis.raf(t*1000));
-gsap.ticker.lagSmoothing(0);
+gsap.ticker.lagSmoothing(500,33);
 
 /* ════════════════════════════
-   THREE.JS UNIVERSE PARTICLE BG
+   THREE.JS UNIVERSE PARTICLE BG — LIGHT MODE
+   Fewer particles, no per-frame buffer rewrites, 30fps cap.
 ════════════════════════════ */
 (function(){
   const canvas=document.getElementById('three-canvas');
   if(!canvas || typeof THREE==='undefined') return;
 
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:false});
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
+  const isMobile=window.matchMedia('(max-width: 700px)').matches;
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:false,powerPreference:'low-power'});
+  renderer.setPixelRatio(1);
   renderer.setSize(innerWidth,innerHeight);
 
   const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,1,2200);
+  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,1,1800);
   camera.position.z=520;
 
-  const starCount=Math.min(1900,Math.max(850,Math.floor((innerWidth*innerHeight)/800)));
+  const area=innerWidth*innerHeight;
+  const starCount=reduceMotion?0:(isMobile?260:Math.min(720,Math.max(360,Math.floor(area/2600))));
   const positions=new Float32Array(starCount*3);
-  const speeds=new Float32Array(starCount);
 
   for(let i=0;i<starCount;i++){
     const i3=i*3;
     positions[i3]=(Math.random()-.5)*1700;
     positions[i3+1]=(Math.random()-.5)*1100;
-    positions[i3+2]=(Math.random()-.5)*1500;
-    speeds[i]=.25+Math.random()*1.1;
+    positions[i3+2]=(Math.random()-.5)*1400;
   }
 
   const starGeometry=new THREE.BufferGeometry();
   starGeometry.setAttribute('position',new THREE.BufferAttribute(positions,3));
   const starMaterial=new THREE.PointsMaterial({
     color:0xffffff,
-    size:1.35,
+    size:isMobile?1.15:1.25,
     transparent:true,
-    opacity:.92,
+    opacity:.72,
     depthWrite:false,
-    sizeAttenuation:true,
-    blending:THREE.AdditiveBlending
+    sizeAttenuation:true
   });
   const stars=new THREE.Points(starGeometry,starMaterial);
   scene.add(stars);
-
-  const dustCount=Math.floor(starCount*.18);
-  const dustPositions=new Float32Array(dustCount*3);
-  for(let i=0;i<dustCount;i++){
-    const i3=i*3;
-    dustPositions[i3]=(Math.random()-.5)*1350;
-    dustPositions[i3+1]=(Math.random()-.5)*900;
-    dustPositions[i3+2]=(Math.random()-.5)*1100;
-  }
-  const dustGeometry=new THREE.BufferGeometry();
-  dustGeometry.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));
-  const dustMaterial=new THREE.PointsMaterial({
-    color:0xffffff,
-    size:2.8,
-    transparent:true,
-    opacity:.22,
-    depthWrite:false,
-    sizeAttenuation:true,
-    blending:THREE.AdditiveBlending
-  });
-  const dust=new THREE.Points(dustGeometry,dustMaterial);
-  scene.add(dust);
 
   const mouse={x:0,y:0,tx:0,ty:0};
   window.addEventListener('mousemove',e=>{
@@ -973,34 +1014,27 @@ gsap.ticker.lagSmoothing(0);
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth,innerHeight);
   }
-  window.addEventListener('resize',resize);
+  window.addEventListener('resize',resize,{passive:true});
 
   let last=0;
+  let hidden=false;
+  document.addEventListener('visibilitychange',()=>{hidden=document.hidden;},{passive:true});
+
   function render(t=0){
     requestAnimationFrame(render);
-    const delta=Math.min(32,t-last||16);
+    if(hidden || t-last<33) return;
+    const delta=Math.min(33,t-last||16);
     last=t;
 
-    mouse.x+=(mouse.tx-mouse.x)*.035;
-    mouse.y+=(mouse.ty-mouse.y)*.035;
-    camera.position.x=mouse.x*22;
-    camera.position.y=-mouse.y*18;
+    mouse.x+=(mouse.tx-mouse.x)*.025;
+    mouse.y+=(mouse.ty-mouse.y)*.025;
+    camera.position.x=mouse.x*14;
+    camera.position.y=-mouse.y*10;
     camera.lookAt(0,0,0);
 
     if(!reduceMotion){
-      stars.rotation.y+=delta*.000045;
-      stars.rotation.x+=delta*.000018;
-      dust.rotation.y-=delta*.000028;
-      dust.rotation.x+=delta*.000012;
-
-      const attr=starGeometry.attributes.position;
-      const arr=attr.array;
-      for(let i=0;i<starCount;i++){
-        const zIndex=i*3+2;
-        arr[zIndex]+=speeds[i]*delta*.018;
-        if(arr[zIndex]>760) arr[zIndex]=-760;
-      }
-      attr.needsUpdate=true;
+      stars.rotation.y+=delta*.000025;
+      stars.rotation.x+=delta*.000010;
     }
 
     renderer.render(scene,camera);
@@ -1058,8 +1092,8 @@ function reveal(sel,opts={}){
   gsap.utils.toArray(sel).forEach((el,i)=>{
     gsap.fromTo(el,
       {opacity:0,y:opts.y||50,x:opts.x||0,scale:opts.scale||1},
-      {opacity:1,y:0,x:0,scale:1,duration:opts.dur||.85,ease:opts.ease||'power3.out',
-       delay:i*(opts.stagger||.07),
+      {opacity:1,y:0,x:0,scale:1,duration:opts.dur||.62,ease:opts.ease||'power3.out',
+       delay:i*(opts.stagger||.04),
        scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}}
     );
   });
@@ -1078,23 +1112,8 @@ lenis.on('scroll',({scroll})=>nav.classList.toggle('scrolled',scroll>30));
 
 /* ════════════════════════════
    CURSOR
+   Disabled: native cursor is faster and prevents hover glitches.
 ════════════════════════════ */
-(function(){
-  if(!window.matchMedia('(pointer:fine)').matches) return;
-  const dot=document.getElementById('cur-dot');
-  const ring=document.getElementById('cur-ring');
-  let mx=0,my=0,rx=0,ry=0,hidden=false;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;if(hidden){dot.style.opacity='1';ring.style.opacity='1';hidden=false;}});
-  document.addEventListener('mouseleave',()=>{dot.style.opacity='0';ring.style.opacity='0';hidden=true;});
-  document.addEventListener('mousedown',()=>document.body.classList.add('cur-click'));
-  document.addEventListener('mouseup',()=>document.body.classList.remove('cur-click'));
-  document.querySelectorAll('a,button,.feat-item,.arch-cell,.road-item').forEach(el=>{
-    el.addEventListener('mouseenter',()=>document.body.classList.add('cur-hover'));
-    el.addEventListener('mouseleave',()=>document.body.classList.remove('cur-hover'));
-  });
-  const ease=.12;
-  (function tick(){rx+=(mx-rx)*ease;ry+=(my-ry)*ease;dot.style.transform=`translate(${mx}px,${my}px)`;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(tick);})();
-})();
 
 /* ════════════════════════════
    HAMBURGER
