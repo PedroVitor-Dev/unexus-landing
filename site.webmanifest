@@ -1,0 +1,22 @@
+{
+  "name": "uNexus OS",
+  "short_name": "uNexus",
+  "description": "uNexus OS is an open-source Linux gaming shell built on Arch Linux, Hyprland and Qt6/QML. A fast, clean and gaming-focused desktop experience with no bloat.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1E1E1E",
+  "theme_color": "#1E1E1E",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
